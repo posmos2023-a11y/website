@@ -151,6 +151,15 @@ footer{border-top:1px solid var(--b1);background:#fafafa}
 .fbadge{padding:4px 10px;border:1px solid var(--b1);border-radius:6px;font-size:11px;color:var(--t3)}
 @media(max-width:900px){.footer-inner{padding:28px 20px}}
 </style>
+<!-- Meta Pixel — META_PIXEL_ID 가 비어 있으면 아무것도 로드하지 않는다 -->
+<script>
+var META_PIXEL_ID='';
+if(META_PIXEL_ID){
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init',META_PIXEL_ID);
+  fbq('track','PageView');
+}
+</script>
 </head>
 <body>
 
@@ -355,7 +364,9 @@ function handleSubmit(){
     }catch(e){return '알 수 없음';}
   }
 
-  var clickedButton=new URLSearchParams(window.location.search).get('from')||'미확인 버튼';
+  var fromMap={'ig-dm-price':'인스타DM-요금','ig-dm-product':'인스타DM-제품','ig-dm-consult':'인스타DM-상담','ig-profile':'인스타프로필'};
+  var fromRaw=new URLSearchParams(window.location.search).get('from');
+  var clickedButton=(fromRaw&&Object.prototype.hasOwnProperty.call(fromMap,fromRaw))?fromMap[fromRaw]:(fromRaw||'미확인 버튼');
   var deviceType=/Mobi|Android/i.test(navigator.userAgent)?'모바일':'PC';
   var appliedAt=new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul',dateStyle:'medium',timeStyle:'short'});
 
@@ -375,6 +386,7 @@ function handleSubmit(){
     if(res.ok){
       document.getElementById('formState').style.display='none';
       document.getElementById('successState').style.display='block';
+      if(window.fbq){fbq('track','Lead');}
     } else {
       btn.disabled=false;
       btn.textContent='무료 상담 신청하기 →';
