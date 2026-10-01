@@ -378,7 +378,15 @@ function handleSubmit(){
     if(res.ok){
       document.getElementById('formState').style.display='none';
       document.getElementById('successState').style.display='block';
-      if(window.fbq){fbq('track','Lead');}
+      // GTM 이 generate_lead 를 GA4 이벤트와 Meta Lead 로 함께 보낸다. fbq 를 직접 부르면 Lead 가 두 번 잡힌다.
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({
+        event:'generate_lead',
+        lead_button:clickedButton,
+        lead_source:src?src.classify(landing):'알 수 없음',
+        lead_code:landing&&landing.from?src.fromLabel(landing.from):'없음',
+        lead_device:deviceType
+      });
     } else {
       btn.disabled=false;
       btn.textContent='무료 상담 신청하기 →';
