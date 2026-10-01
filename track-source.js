@@ -53,11 +53,13 @@
   var utm={};
   UTM_KEYS.forEach(function(k){var v=params.get(k);if(v)utm[k]=v;});
 
-  // 사이트 안에서 넘어온 from 은 버튼 위치(상단메뉴 등)이므로 유입 코드로 보지 않는다.
+  // from 은 대부분 사이트 안 버튼 위치(상단메뉴 등)다. 외부 referrer 와 함께 오거나 인스타 코드(ig-*)일 때만
+  // 유입 코드로 본다. 새 탭·주소 복사처럼 referrer 없이 열린 버튼 링크가 원래 출처를 덮어쓰지 않게 하기 위함.
   var from=params.get('from')||'';
-  var campaignFrom=(from&&(!internal||Object.prototype.hasOwnProperty.call(FROM_LABELS,from)))?from:'';
+  var externalRef=!!ref&&!internal;
+  var campaignFrom=(from&&(externalRef||/^ig-/.test(from)))?from:'';
 
-  var hasSignal=(!!ref&&!internal)||!!campaignFrom||Object.keys(utm).length>0;
+  var hasSignal=externalRef||!!campaignFrom||Object.keys(utm).length>0;
   var landing=read();
 
   // 외부 출처가 있으면 최신 출처로 갱신하고, 기록이 없을 때의 첫 직접접속도 남긴다.
