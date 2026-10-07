@@ -4,20 +4,34 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
-<title>포스모스 | 당근마켓</title>
+<title>무료 상담 신청 — POSMOS</title>
+<meta name="description" content="포스기 무료 상담 신청. 전화번호와 지역만 남겨주시면 담당자가 1시간 내 직접 연락드립니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://posmos.net/daangn">
+<meta property="og:title" content="무료 상담 신청 — POSMOS">
+<meta property="og:description" content="포스기 무료 상담 신청. 전화번호와 지역만 남겨주시면 담당자가 1시간 내 직접 연락드립니다.">
+<meta property="og:image" content="https://posmos.net/tossfront.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="무료 상담 신청 — POSMOS">
+<meta name="twitter:description" content="포스기 무료 상담 신청. 전화번호와 지역만 남겨주시면 담당자가 1시간 내 직접 연락드립니다.">
+<meta name="twitter:image" content="https://posmos.net/tossfront.png">
 <script>
 // 당근마켓 전용 주소(posmos.net/daangn). 상담 신청 폼으로 바로 넘기면서 유입 코드 daangn 을 붙인다.
 // 신청 페이지의 track-source.js 가 이 코드를 30일간 기억해 '유입 경로'·'유입 코드'를 '당근마켓'으로 보낸다.
-// 링크에 utm 값을 붙여 두면 그대로 넘겨준다.
+// 링크에 utm 이 없으면 utm_source=daangn·utm_medium=social 을 붙여 GA4 세션 출처에서도 당근을 구분한다.
 (function(){
   var p=new URLSearchParams(location.search);
   p.set('from','daangn');
+  if(!p.get('utm_source')){
+    p.set('utm_source','daangn');
+    if(!p.get('utm_medium'))p.set('utm_medium','social');
+  }
   location.replace('/posmos-apply.html?'+p.toString());
 })();
 </script>
-<noscript><meta http-equiv="refresh" content="0; url=/posmos-apply.html?from=daangn"></noscript>
+<noscript><meta http-equiv="refresh" content="0; url=/posmos-apply.html?from=daangn&amp;utm_source=daangn&amp;utm_medium=social"></noscript>
 </head>
 <body>
-<p><a href="/posmos-apply.html?from=daangn">포스모스 무료 상담 신청하기</a></p>
+<p><a href="/posmos-apply.html?from=daangn&amp;utm_source=daangn&amp;utm_medium=social">포스모스 무료 상담 신청하기</a></p>
 </body>
 </html>

@@ -35,7 +35,8 @@
       // 인스타·페북 앱이 링크를 열 때 lm.facebook.com 을 거친다. 페이스북보다 먼저 걸러낸다.
       if(/instagram\.|lm\.facebook\.|l\.facebook\./.test(host))return '인스타그램';
       if(/facebook\./.test(host))return '페이스북';
-      if(/daangn\.|karrotmarket\./.test(host))return '당근마켓';
+      // 당근 안드로이드 앱은 referrer 가 android-app://com.towneers.www/ 로 올 수 있다.
+      if(/daangn\.|karrotmarket\.|towneers\./.test(host))return '당근마켓';
       // 모르는 중간 주소를 거쳐 왔어도 채널 유입 코드가 있으면 그 채널로 본다.
       return channelOf(landing.from)||host;
     }
