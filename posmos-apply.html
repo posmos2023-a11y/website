@@ -151,6 +151,13 @@ footer{border-top:1px solid var(--b1);background:#fafafa}
 .footer-badges{display:flex;gap:8px}
 .fbadge{padding:4px 10px;border:1px solid var(--b1);border-radius:6px;font-size:11px;color:var(--t3)}
 @media(max-width:900px){.footer-inner{padding:28px 20px}}
+
+/* 당근마켓 링크로 들어온 방문자에게만 보이는 이벤트 이미지. 카드 위쪽 가장자리까지 채운다(카드 안쪽 여백만큼 음수 여백). */
+.daangn-promo{display:block;width:calc(100% + 104px);max-width:none;height:auto;margin:-56px -52px 28px;border-radius:27px 27px 0 0}
+.daangn-promo[hidden]{display:none}
+.is-daangn .apply-eyebrow{display:none}
+.is-daangn .apply-h1{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media(max-width:860px){.daangn-promo{width:calc(100% + 56px);margin:-36px -28px 24px}}
 </style>
 <!-- Meta Pixel — META_PIXEL_ID 가 비어 있으면 아무것도 로드하지 않는다 -->
 <script>
@@ -201,6 +208,21 @@ if(META_PIXEL_ID){
     <div class="apply-card fu fu1">
       
       <div id="formState">
+        <img class="daangn-promo" id="daangnPromo" data-src="daangn-toss0won.webp" width="800" height="1000" alt="선착순 300대 한정, 10월 31일 마감. 토스터미널2와 토스프론트2, 소비자가 528,000원(VAT 포함)에서 0원" hidden>
+        <script>
+        // 당근마켓 링크(?from=daangn)로 들어왔거나 30일 안에 당근으로 처음 들어온 방문자에게만 토스 0원 이벤트 이미지를 보인다.
+        // 이미지가 제목 역할을 하므로 위쪽 안내 배지와 제목은 숨긴다(제목은 화면 낭독기용으로 남김). 이벤트가 끝나는 10/31 이후에는 원래 화면으로 돌아간다.
+        (function(){
+          var src=window.posmosSource,landing=src&&src.landing;
+          var fromDaangn=new URLSearchParams(location.search).get('from')==='daangn'||!!(landing&&landing.from==='daangn');
+          var eventOn=Date.now()<Date.parse('2026-11-01T00:00:00+09:00');
+          if(!fromDaangn||!eventOn)return;
+          var img=document.getElementById('daangnPromo');
+          img.src=img.getAttribute('data-src');
+          img.hidden=false;
+          document.body.classList.add('is-daangn');
+        })();
+        </script>
         <div class="apply-eyebrow">
           <span class="apply-dot"></span>
           무료 상담 신청
@@ -261,13 +283,6 @@ if(META_PIXEL_ID){
     <div class="apply-aside fu fu2">
       <p class="aside-title">왜 포스모스인가요?</p>
       <div class="aside-items">
-        <div class="aside-item">
-          <div class="aside-item-icon">💰</div>
-          <div class="aside-item-text">
-            <h4>포스기·단말기 무료 제공</h4>
-            <p>기기 구매·렌탈 비용 없이<br>월 34,000원~으로 모든 게 해결됩니다.</p>
-          </div>
-        </div>
         <div class="aside-item">
           <div class="aside-item-icon">🚀</div>
           <div class="aside-item-text">
