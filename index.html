@@ -298,6 +298,53 @@ footer{border-top:1px solid rgba(0,0,0,0.12);background:#fafafa}
 }
 
 ::selection{background:rgba(59,107,255,0.32);color:#fff}
+
+/* ===== 광고 상품 카드(np-): 요금제 앞 '토스 0원 · 태블릿 POS 세트' (2026-10-27) ===== */
+[data-until][hidden]{display:none!important}
+.np-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:40px}
+.np-card{display:flex;flex-direction:column;border-radius:24px;border:1px solid rgba(0,0,0,0.08);background:linear-gradient(160deg,#f8f8fc 0%,#efeff5 100%);box-shadow:0 2px 8px rgba(0,0,0,0.06),0 8px 24px rgba(0,0,0,0.07)}
+.np-media{margin:10px 10px 0;border-radius:14px;overflow:hidden;aspect-ratio:16/10;background:var(--bg2)}
+.np-media img{display:block;width:100%;height:100%;object-fit:cover}
+.np-body{flex:1;display:flex;flex-direction:column;padding:24px 30px 30px}
+.np-name{font-size:24px;font-weight:800;letter-spacing:-0.5px;line-height:1.3;color:#0a0a14}
+.np-price{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 6px;margin-top:10px;color:#2a54e0;white-space:nowrap}
+.np-price .price-num{font-size:52px;line-height:1;color:#2a54e0}
+.np-pre{font-size:20px;font-weight:700;color:var(--t1)}
+.np-won{font-size:26px;font-weight:800}
+.np-vat{align-self:center;padding:4px 10px;border-radius:100px;background:#0e0e28;color:#fff;font-size:13px;font-weight:700}
+.np-note{align-self:flex-start;margin-top:12px;padding:5px 12px;border-radius:100px;background:rgba(0,0,0,0.05);font-size:15px;font-weight:700;color:var(--t2)}
+.np-note.is-hot{background:rgba(214,0,28,0.08);color:#c4001a}
+.np-card .np-list{margin:20px 0 0;padding-top:18px;border-top:1px solid rgba(0,0,0,0.08);gap:10px}
+.np-card .np-list li{align-items:flex-start;font-size:17px;color:var(--t1)}
+.np-card .np-list li::before{margin-top:4px}
+/* 가운뎃점(·)을 앞 낱말에 붙여 묶는다: 줄은 점 뒤에서만 바뀐다 */
+.np-nobr{white-space:nowrap}
+.np-foot{margin-top:14px;font-size:13px;color:#5c5c70}
+.np-cta{margin-top:auto;padding-top:26px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px}
+.np-cta .plan-btn{margin-top:0;align-self:auto;background:#3563f5}
+.np-tel{display:inline-flex;align-items:center;min-height:44px;padding:0 2px;font-size:15px;font-weight:700;color:var(--t1);text-decoration:none;white-space:nowrap}
+.np-tel:hover{color:#2a54e0}
+/* 토스 카드가 빠지고 한 장만 남으면 PC 에서는 사진 | 내용 가로형 */
+@media(min-width:901px){
+  .np-card:only-child{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);align-items:center}
+  .np-card:only-child .np-media{margin:12px}
+  .np-card:only-child .np-body{padding:36px 48px 36px 28px}
+  .np-card:only-child .np-name{font-size:28px}
+}
+@media(max-width:900px){.np-grid{grid-template-columns:1fr;gap:20px;max-width:560px}}
+@media(max-width:600px){
+  .np-card{border-radius:20px}
+  .np-media{margin:8px 8px 0;border-radius:12px}
+  .np-body{padding:20px 20px 22px}
+  .np-name{font-size:20px}
+  .np-price .price-num{font-size:44px}
+  .np-pre{font-size:17px}
+  .np-won{font-size:22px}
+  .np-card .np-list li{font-size:16px}
+  .np-cta{flex-direction:column;align-items:stretch;gap:2px}
+  .np-cta .plan-btn{text-align:center;padding:15px;font-size:15px}
+  .np-tel{justify-content:center}
+}
 </style>
 </head>
 <body>
@@ -450,6 +497,68 @@ footer{border-top:1px solid rgba(0,0,0,0.12);background:#fafafa}
   start();
 })();
 </script>
+
+<!-- ===== 0. 광고 상품: 토스 0원(10월 31일까지) · 태블릿 POS 세트 — 요금제 앞 =====
+     문구는 인스타 광고에 쓰는 승인 문구만. data-until 이 붙은 토스 카드·라벨 조각은 기본 숨김이고,
+     2026-11-01T00:00:00+09:00 전에만 보이며 그 뒤에는 지운다(아래 스크립트, ad-popup.js 의 토스 종료 시각과 같음). 11/1 이후 첫 배포 때 토스 카드 HTML 은 지운다. -->
+<section id="deals" class="sec-pricing">
+  <div class="sec">
+    <span class="eyebrow reveal">✦ <span data-until="2026-11-01T00:00:00+09:00" hidden>토스 단말기 · </span>태블릿 POS</span>
+    <h2 class="sec-h2 reveal">우리 매장에도 가능한지<br><em>확인해 보세요</em></h2>
+    <div class="np-grid reveal">
+      <article class="np-card" id="np-toss" data-until="2026-11-01T00:00:00+09:00" hidden aria-labelledby="np-toss-h">
+        <div class="np-media"><img src="np-toss.webp" width="1120" height="700" alt="토스터미널과 토스프론트" loading="lazy" decoding="async"></div>
+        <div class="np-body">
+          <h3 class="np-name" id="np-toss-h">토스터미널 + 토스프론트</h3>
+          <p class="np-price"><span class="np-pre">기기값</span><span class="price-num">0</span><span class="np-won">원</span></p>
+          <p class="np-note is-hot">10월 31일까지 선착순 300대</p>
+          <ul class="svc-feature-list np-list">
+            <li>애플페이 포함 모든 결제</li>
+            <li>모든 POS에 연결 가능</li>
+            <li><span><span class="np-nobr">결제·</span>영수증 한 대로 끝</span></li>
+            <li>별도 수수료 없음</li>
+          </ul>
+          <p class="np-foot">* 제품 화면은 실제와 다를 수 있습니다.</p>
+          <div class="np-cta">
+            <a class="plan-btn pb-w" href="posmos-apply.html?from=상품카드-토스0원" aria-label="지금 신청하기 — 토스터미널 + 토스프론트">지금 신청하기 <span aria-hidden="true">→</span></a>
+            <a class="np-tel" href="tel:15442485"><span aria-hidden="true">☎&nbsp;</span>1544-2485</a>
+          </div>
+        </div>
+      </article>
+      <article class="np-card" id="np-tab" aria-labelledby="np-tab-h">
+        <div class="np-media"><img src="np-tablet.webp" width="1120" height="700" alt="태블릿, 토스프론트, 영수증 프린터" loading="lazy" decoding="async"></div>
+        <div class="np-body">
+          <h3 class="np-name" id="np-tab-h">태블릿 POS 세트</h3>
+          <p class="np-price"><span class="np-pre">월</span><span class="price-num">9,900</span><span class="np-won">원</span><span class="np-vat">VAT 포함</span></p>
+          <p class="np-note">별도 수수료 없음</p>
+          <ul class="svc-feature-list np-list">
+            <li>11인치 대형 태블릿</li>
+            <li>모든 결제 되는 토스프론트</li>
+            <li>3인치 영수증 프린터</li>
+            <li><span><span class="np-nobr">배달의민족·</span><span class="np-nobr">쿠팡이츠·</span>요기요 주문 연동</span></li>
+          </ul>
+          <div class="np-cta">
+            <a class="plan-btn pb-w" href="posmos-apply.html?from=상품카드-태블릿POS" aria-label="지금 신청하기 — 태블릿 POS 세트">지금 신청하기 <span aria-hidden="true">→</span></a>
+            <a class="np-tel" href="tel:15442485"><span aria-hidden="true">☎&nbsp;</span>1544-2485</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+<script>
+/* 기한이 있는 조각(data-until)은 기한 전에만 보이고, 지나면 지운다.
+   점검용: 주소 끝 ?today=2026-11-01 은 날짜를 앞으로만 옮겨 본다(운영에서 지난 행사를 다시 띄울 수는 없다). */
+(function(){try{
+  var now=Date.now(),m=/[?&]today=(\d{4}-\d\d-\d\d)/.exec(location.search);
+  if(m)now=Math.max(now,Date.parse(m[1]+'T00:00:00+09:00')||0);
+  [].forEach.call(document.querySelectorAll('#deals [data-until]'),function(el){
+    if(Date.parse(el.getAttribute('data-until'))>now)el.hidden=false;else el.parentNode.removeChild(el);
+  });
+}catch(e){}})();
+</script>
+
+<hr class="sec-divider">
 
 <!-- ===== 1. 요금제 ===== -->
 <section id="pricing" class="sec-pricing">
@@ -985,6 +1094,7 @@ window.addEventListener('scroll',function(){
 // scroll spy
 var sections=[
   {id:'top',el:document.getElementById('top')},
+  {id:'deals',el:document.getElementById('deals')},
   {id:'pricing',el:document.getElementById('pricing')},
   {id:'services',el:document.getElementById('services')},
   {id:'tossfront',el:document.getElementById('tossfront')},
@@ -995,7 +1105,7 @@ var sections=[
   {id:'supply',el:document.getElementById('supply')},
   {id:'devrequest',el:document.getElementById('devrequest')}
 ];
-var navSectionAlias={services:'pricing',tossfront:'pricing',kiosk:'pricing',tableorder:'pricing',qrorder:'pricing'};
+var navSectionAlias={deals:'pricing',services:'pricing',tossfront:'pricing',kiosk:'pricing',tableorder:'pricing',qrorder:'pricing'};
 function updateNav(){
   var scrollY=window.scrollY+100;
   var current='top';
