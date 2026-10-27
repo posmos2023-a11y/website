@@ -1,5 +1,6 @@
 // 메인 첫 화면 광고 팝업 3종(토스 0원 · 인터넷 패키지 · 태블릿 POS). 세 개를 한 번에 띄운다.
-// - 세션당 한 번만 뜬다. '닫기'를 누르면 이번 방문에서는 다시 안 뜨고, '오늘 하루 보지 않기'는 한국 날짜로 오늘 하루 안 뜬다.
+// - 세션당 한 번만 뜬다. 닫는 방법은 버튼뿐이다(X · 닫기 · 오늘 하루 보지 않기). 바깥 영역을 눌러도, Esc 를 눌러도 닫히지 않는다.
+// - '닫기'(X 포함)를 누르면 이번 방문에서는 다시 안 뜨고, '오늘 하루 보지 않기'는 한국 날짜로 오늘 하루 안 뜬다.
 // - 토스 0원은 행사가 끝나는 2026-10-31 이후 자동으로 빠진다.
 // - 주소 끝에 ?popup=1 을 붙이면 위 조건과 상관없이 다시 띄운다(점검용).
 // - 없애려면 index.html 의 <script src="ad-popup.js"> 한 줄을 지우면 된다.
@@ -90,11 +91,13 @@
       track('popup_close',why);
     }
     function onKey(e){
-      if(e.key==='Escape'){e.preventDefault();close('esc');return;}
+      // 닫기는 버튼(X·닫기·오늘 하루 보지 않기)으로만 한다. Esc 로는 닫히지 않는다.
       if(e.key!=='Tab')return;
       var f=[].slice.call(wrap.querySelectorAll('a[href],button')).filter(function(x){return x.offsetParent!==null;});
       if(!f.length)return;
       var first=f[0],last=f[f.length-1];
+      // 바깥을 눌러 포커스가 팝업 밖으로 빠졌어도 Tab 은 팝업 안으로 돌아온다
+      if(!wrap.contains(document.activeElement)){e.preventDefault();(e.shiftKey?last:first).focus();return;}
       if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
       else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
     }
@@ -102,7 +105,6 @@
     wrap.querySelector('.adp-x').addEventListener('click',function(){close('x');});
     wrap.querySelector('.adp-close').addEventListener('click',function(){close('close');});
     wrap.querySelector('.adp-hide').addEventListener('click',function(){set('localStorage','posmos_ad_popup_hide',today());close('hide-today');});
-    wrap.addEventListener('click',function(e){if(e.target===wrap)close('backdrop');});
     [].forEach.call(wrap.querySelectorAll('.adp-cta'),function(a){
       a.addEventListener('click',function(){track('popup_click',a.getAttribute('data-k'));});
     });
