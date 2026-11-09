@@ -14,14 +14,17 @@
 <meta property="og:url" content="https://posmos.net/posmos-privacy.html">
 <meta property="og:title" content="POSMOS — 개인정보처리방침">
 <meta property="og:description" content="포스모스 개인정보처리방침. 수집 항목, 이용 목적, 보유 기간 등을 안내합니다.">
-<meta property="og:image" content="https://posmos.net/tosfront1.png">
+<meta property="og:image" content="https://posmos.net/tossfront.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="POSMOS — 개인정보처리방침">
 <meta name="twitter:description" content="포스모스 개인정보처리방침. 수집 항목, 이용 목적, 보유 기간 등을 안내합니다.">
-<meta name="twitter:image" content="https://posmos.net/tosfront1.png">
+<meta name="twitter:image" content="https://posmos.net/tossfront.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -91,6 +94,18 @@ footer{border-top:1px solid rgba(0,0,0,0.10);background:#fafafa}
 
 ::selection{background:rgba(59,107,255,0.32);color:#fff}
 
+/* 고급화: 제목과 항목이 차례로 떠오른다 */
+.ico{width:1em;height:1em;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mobile-menu .m-cta{display:flex;align-items:center;justify-content:center;gap:8px}
+.wrap>*{animation:riseIn .9s cubic-bezier(.16,1,.3,1) both}
+.wrap>*:nth-child(1){animation-delay:.05s}.wrap>*:nth-child(2){animation-delay:.12s}.wrap>*:nth-child(3){animation-delay:.19s}
+.wrap>*:nth-child(4){animation-delay:.26s}.wrap>*:nth-child(5){animation-delay:.33s}.wrap>*:nth-child(6){animation-delay:.4s}
+.wrap>*:nth-child(7){animation-delay:.47s}.wrap>*:nth-child(8){animation-delay:.54s}
+@keyframes riseIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.prv-num{transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.prv-section:hover .prv-num{transform:rotate(-8deg) scale(1.08)}
+@media(prefers-reduced-motion:reduce){.wrap>*{animation:fadeOnly .5s ease both}@keyframes fadeOnly{from{opacity:0}to{opacity:1}}}
+
 @media(max-width:900px){
   nav{padding:0 20px}
   .nav-center,.n-ghost{display:none!important}
@@ -100,12 +115,25 @@ footer{border-top:1px solid rgba(0,0,0,0.10);background:#fafafa}
   .footer-top{flex-direction:column}
   .footer-cols{gap:28px}
 }
+
+/* 페이지 전환: 메인에서 누른 버튼이 이 페이지의 신청 카드로 커지며 넘어온다(지원 브라우저만) */
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:.22s ease both vtOut}
+::view-transition-new(root){animation:.5s cubic-bezier(.16,1,.3,1) both vtIn}
+::view-transition-group(apply-cta){animation-duration:.55s;animation-timing-function:cubic-bezier(.16,1,.3,1)}
+::view-transition-old(apply-cta),::view-transition-new(apply-cta){height:100%;object-fit:cover;object-position:top}
+@keyframes vtOut{to{opacity:0}}
+@keyframes vtIn{from{opacity:0;transform:translateY(24px)}}
+nav{view-transition-name:site-nav}
 </style>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T6DNFLFK" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+</svg>
 
 <nav id="nav">
   <a class="nav-logo" href="index.html">
@@ -133,7 +161,7 @@ footer{border-top:1px solid rgba(0,0,0,0.10);background:#fafafa}
   <a href="index.html#pricing">요금제</a>
   <a href="index.html#process">도입 과정</a>
   <a href="index.html#devrequest">개발 문의</a>
-  <a href="posmos-apply.html?from=개인정보-모바일메뉴" class="m-cta">📞 무료 상담 신청</a>
+  <a href="posmos-apply.html?from=개인정보-모바일메뉴" class="m-cta"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg>무료 상담 신청</a>
 </div>
 
 <div class="wrap">
