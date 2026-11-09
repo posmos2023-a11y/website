@@ -5,7 +5,9 @@
   var KEY='posmos_landing';
   var TTL=30*24*60*60*1000;
   var UTM_KEYS=['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
-  var FROM_LABELS={'ig-dm-price':'인스타DM-요금','ig-dm-product':'인스타DM-제품','ig-dm-consult':'인스타DM-상담','ig-profile':'인스타프로필','ig-ad':'인스타광고','ig-story':'인스타스토리','ig-old':'인스타옛계정','daangn':'당근마켓'};
+  var FROM_LABELS={'ig-dm-price':'인스타DM-요금','ig-dm-product':'인스타DM-제품','ig-dm-consult':'인스타DM-상담','ig-profile':'인스타프로필','ig-ad':'인스타광고','ig-story':'인스타스토리','ig-old':'인스타옛계정','daangn':'당근마켓','tiktok':'틱톡'};
+  // 틱톡 앱 안 브라우저의 User-Agent 표시(안드로이드 trill_·iOS musical_ly_·BytedanceWebview). 당근 앱은 karrot·daangn·towneers.
+  var APP_UA=[[/musical_ly|trill_|BytedanceWebview|TikTok/i,'tiktok'],[/karrot|daangn|towneers/i,'daangn']];
 
   function hostOf(url){
     try{return new URL(url).hostname.replace(/^www\./,'');}catch(e){return '';}
@@ -16,18 +18,28 @@
     return Object.prototype.hasOwnProperty.call(FROM_LABELS,code)?FROM_LABELS[code]:code;
   }
 
-  // 사이트 밖 채널(인스타·당근마켓)의 유입 코드면 그 채널 이름을, 아니면 빈 문자열을 돌려준다.
+  // 사이트 밖 채널(인스타·당근마켓·틱톡)의 유입 코드면 그 채널 이름을, 아니면 빈 문자열을 돌려준다.
   // 이 코드들은 인앱 브라우저처럼 referrer 가 없어도 유입 코드로 인정한다.
   function channelOf(code){
     if(!code)return '';
     if(/^ig-/.test(code))return '인스타그램';
     if(code==='daangn')return '당근마켓';
+    if(code==='tiktok'||/^tt-/.test(code))return '틱톡';
+    return '';
+  }
+
+  // utm_source·앱 표시(via)로 당근·틱톡을 알아본다. 인스타 utm 은 예전처럼 'utm: instagram' 으로 둔다(보고서 값 유지).
+  function channelOfSource(src){
+    if(!src)return '';
+    if(/tiktok|틱톡/i.test(src))return '틱톡';
+    if(/daangn|karrot|당근/i.test(src))return '당근마켓';
     return '';
   }
 
   function classify(landing){
     if(!landing)return '알 수 없음';
     var host=hostOf(landing.referrer);
+    var channel=channelOf(landing.from)||channelOfSource(landing.utm&&landing.utm.utm_source)||channelOfSource(landing.via);
     if(host){
       if(/google\./.test(host))return '구글 검색';
       if(/naver\./.test(host))return '네이버';
@@ -37,11 +49,13 @@
       if(/facebook\./.test(host))return '페이스북';
       // 당근 안드로이드 앱은 referrer 가 android-app://com.towneers.www/ 로 올 수 있다.
       if(/daangn\.|karrotmarket\.|towneers\./.test(host))return '당근마켓';
+      // 틱톡: 웹(tiktok.com)·안드로이드 앱(android-app://com.zhiliaoapp.musically, com.ss.android.ugc.trill)
+      if(/tiktok|musical\.ly|zhiliaoapp|ss\.android\.ugc/.test(host))return '틱톡';
       // 모르는 중간 주소를 거쳐 왔어도 채널 유입 코드가 있으면 그 채널로 본다.
-      return channelOf(landing.from)||host;
+      return channel||host;
     }
-    // 인앱 브라우저는 referrer 를 보내지 않는 경우가 많아 유입 코드·utm 으로 보완한다.
-    if(channelOf(landing.from))return channelOf(landing.from);
+    // 인앱 브라우저는 referrer 를 보내지 않는 경우가 많아 유입 코드·utm·틱톡 광고 클릭 ID·앱 표시로 보완한다.
+    if(channel)return channel;
     if(landing.utm&&landing.utm.utm_source)return 'utm: '+landing.utm.utm_source;
     return '직접접속 (주소창/북마크)';
   }
@@ -71,8 +85,18 @@
   var externalRef=!!ref&&!internal;
   var campaignFrom=(from&&(externalRef||channelOf(from)))?from:'';
 
-  var hasSignal=externalRef||!!campaignFrom||Object.keys(utm).length>0;
+  // 틱톡 광고는 주소에 ttclid 를 붙인다. 앱 안 브라우저 표시(User-Agent)는 사이트 밖에서 들어온 화면에서만 보고,
+  // 이미 같은 앱 출처로 기록돼 있으면 다시 쓰지 않는다(앱 브라우저가 referrer 를 안 보내도 사이트 안 이동마다 덮어쓰지 않게).
+  var adVia=params.get('ttclid')?'tiktok':'';
+  var appVia='';
+  if(!internal){
+    var ua=navigator.userAgent||'';
+    for(var i=0;i<APP_UA.length;i++)if(APP_UA[i][0].test(ua)){appVia=APP_UA[i][1];break;}
+  }
+  var via=adVia||appVia;
   var landing=read();
+
+  var hasSignal=externalRef||!!campaignFrom||Object.keys(utm).length>0||!!adVia||(!!appVia&&!(landing&&landing.via===appVia));
 
   // 외부 출처가 있으면 최신 출처로 갱신하고, 기록이 없을 때의 첫 직접접속도 남긴다.
   if(hasSignal||(!landing&&!internal)){
@@ -81,6 +105,7 @@
       referrer:internal?'':ref,
       from:campaignFrom,
       utm:utm,
+      via:via,
       page:w.location.pathname+w.location.search
     };
     write(landing);
