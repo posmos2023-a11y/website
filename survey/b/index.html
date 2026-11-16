@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>시안 B · 전단 카드형 한 페이지</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{--navy:#0a2263;--blue:#1d5cff;--line:#dfe5f0;--sub:#5d6680}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:Pretendard,system-ui,sans-serif;background:#e9eef7;color:#111a2e;display:flex;justify-content:center}
+.app{width:100%;max-width:440px;background:#f6f8fc;min-height:100vh;padding-bottom:120px}
+.hero{background:linear-gradient(160deg,#eaf3ff 0%,#fff 65%);padding:22px 18px 18px}
+.logo{font-weight:800;font-size:17px;color:var(--navy)}.logo b{color:#2fb24a}
+.hero h1{font-size:27px;line-height:1.32;letter-spacing:-.8px;font-weight:900;color:var(--navy);margin-top:14px}
+.hero h1 em{font-style:normal;color:var(--blue);box-shadow:inset 0 -9px 0 #ffe34d}
+.hero p{margin-top:8px;color:var(--sub);font-size:15.5px}
+.num{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;font-weight:800;margin-right:7px;vertical-align:2px}
+.sec{margin:12px 14px 0;background:#fff;border-radius:20px;padding:18px 16px;box-shadow:0 2px 10px #0a22630d;scroll-margin-top:14px;border:2px solid transparent;transition:border-color .2s}
+.sec.need{border-color:#ff9a3d}
+.sec h2{font-size:18px;font-weight:800;letter-spacing:-.3px}.sec h2 small{font-weight:600;color:var(--sub);font-size:14px;margin-left:4px}
+.cards{display:grid;gap:9px;margin-top:13px}
+.card{display:flex;align-items:center;gap:12px;padding:14px 14px 14px 12px;border-radius:16px;background:#fff;border:2px solid var(--line);cursor:pointer;text-align:left;font:inherit;width:100%;color:inherit;transition:.12s}
+.card .no{width:32px;height:32px;border-radius:50%;color:#fff;font-weight:900;display:grid;place-items:center;flex:none}
+.card .t{font-size:14.5px;font-weight:700;color:#33405e}.card .p{font-size:21px;font-weight:900;letter-spacing:-.5px}
+.card .chk{margin-left:auto;flex:none;width:30px;height:30px;border-radius:9px;border:2px solid #c3ccdc;display:grid;place-items:center;color:#fff;font-weight:900}
+.card.on{border-color:var(--c);background:color-mix(in srgb,var(--c) 7%,#fff)}
+.card.on .chk{background:var(--c);border-color:var(--c)}.card.on .chk::after{content:"✓"}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:13px}
+.chip{height:54px;border-radius:14px;border:2px solid var(--line);background:#fff;font:inherit;font-size:16.5px;font-weight:700;color:#33405e;cursor:pointer}
+.chip:last-child{grid-column:span 2}
+.chip.on{border-color:var(--blue);background:#eef4ff;color:var(--blue)}
+input{width:100%;height:58px;padding:0 16px;border:2px solid var(--line);border-radius:14px;font:inherit;font-size:19px;font-weight:700;margin-top:12px}
+input:focus{outline:none;border-color:var(--blue)}
+.err{color:#e0352b;font-size:14px;margin-top:6px;min-height:18px}
+.note{font-size:13px;color:var(--sub);line-height:1.5}.note a{color:var(--sub)}
+.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;padding:14px 14px calc(18px + env(safe-area-inset-bottom));background:linear-gradient(#f6f8fc00,#f6f8fc 30%)}
+.btn{width:100%;height:58px;border:0;border-radius:16px;font:inherit;font-size:18px;font-weight:800;background:var(--navy);color:#fff;cursor:pointer;transition:background .2s}
+.btn.wait{background:#8d99b8}
+.done{position:fixed;inset:0;background:#fff;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;z-index:5}
+.done.show{display:flex}.done h1{font-size:26px;margin-top:12px}.done p{color:var(--sub);margin-top:8px;font-size:16px}
+.done .btn{margin-top:28px;max-width:320px}
+</style></head><body>
+<div class="app">
+  <div class="hero">
+    <div class="logo"><b>✱</b> POSMOS</div>
+    <h1>사장님, <em>끌리는 혜택</em><br>골라주세요</h1>
+    <p>세 가지만 하면 끝나요 · 30초</p>
+  </div>
+  <div class="sec" id="s1"><h2><span class="num">1</span>관심 있는 혜택 <small>여러 개 가능</small></h2><div class="cards" id="cards"></div></div>
+  <div class="sec" id="s2"><h2><span class="num">2</span>매장 업종</h2><div class="chips" id="biz">
+    <button class="chip">음식점</button><button class="chip">카페·베이커리</button><button class="chip">주점·호프</button><button class="chip">소매·편의점</button><button class="chip">기타</button></div></div>
+  <div class="sec" id="s3"><h2><span class="num">3</span>혜택 안내 받을 번호</h2>
+    <input id="ph" type="tel" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000"><div class="err" id="err"></div>
+    <p class="note">번호는 혜택 안내에만 쓰고 안내 후 바로 파기합니다. <a href="https://posmos.net/posmos-privacy.html" target="_blank">자세히</a></p></div>
+  <div class="bottom"><button class="btn wait" id="go" onclick="submitIt()">관심 혜택을 골라주세요</button></div>
+  <div class="done" id="done"><div style="font-size:58px">🎁</div><h1>참여해 주셔서<br>감사합니다!</h1><p id="doneMsg"></p><button class="btn" onclick="location.href='https://posmos.net'">포스모스 둘러보기</button></div>
+</div>
+<script>
+const P=[['위약금 없는 정수기','월 17,900원','#1d5cff'],['배민 접수하면','5만원 받기','#13a84a'],['키오스크','월 45,000원','#7b3fe4'],['테이블 오더','월 10,000원','#f26b0f']];
+const A={want:[],biz:null};const $=s=>document.getElementById(s);
+const fmt=v=>{v=v.replace(/\D/g,'').slice(0,11);return v.length<4?v:v.length<8?v.slice(0,3)+'-'+v.slice(3):v.slice(0,3)+'-'+v.slice(3,v.length-4)+'-'+v.slice(-4)};
+const okPhone=v=>/^01[016789]\d{7,8}$/.test(v.replace(/\D/g,''));
+$('cards').innerHTML=P.map((p,k)=>`<button class="card" style="--c:${p[2]}" data-k="${k}"><span class="no" style="background:${p[2]}">${k+1}</span><span><div class="t">${p[0]}</div><div class="p" style="color:${p[2]}">${p[1]}</div></span><span class="chk"></span></button>`).join('');
+$('cards').onclick=e=>{const b=e.target.closest('.card');if(!b)return;b.classList.toggle('on');const k=+b.dataset.k;
+  A.want=b.classList.contains('on')?[...A.want,k]:A.want.filter(x=>x!==k);$('s1').classList.remove('need');upd();};
+$('biz').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;
+  $('biz').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b));A.biz=b.textContent;$('s2').classList.remove('need');upd();
+  setTimeout(()=>$('s3').scrollIntoView({block:'start'}),250);};
+$('ph').oninput=e=>{e.target.value=fmt(e.target.value);$('err').textContent='';$('s3').classList.remove('need');upd();};
+function upd(){const t=!A.want.length?'관심 혜택을 골라주세요':!A.biz?'업종을 골라주세요':!okPhone($('ph').value)?'번호를 입력해 주세요':'동의하고 제출하기';$('go').textContent=t;$('go').classList.toggle('wait',t!=='동의하고 제출하기');}
+function submitIt(){
+  const miss=!A.want.length?'s1':!A.biz?'s2':!okPhone($('ph').value)?'s3':null;
+  if(miss&&miss!=='s3'){$(miss).classList.add('need');$(miss).scrollIntoView({block:'start'});return;}
+  if(miss==='s3'){$('err').textContent='휴대폰 번호를 확인해 주세요';$('ph').focus();return;}
+  $('doneMsg').textContent='남겨주신 번호로 혜택을 안내해 드릴게요.';$('done').classList.add('show');
+}
+</script></body></html>

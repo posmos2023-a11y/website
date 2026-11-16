@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>시안 A · 한 화면 한 질문</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{--navy:#0b2361;--blue:#1d5cff;--line:#dfe5f0;--sub:#5d6680;--bg:#f4f7fc}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:Pretendard,system-ui,sans-serif;background:var(--bg);color:#111a2e;display:flex;justify-content:center}
+.app{width:100%;max-width:440px;min-height:100vh;min-height:100dvh;background:#fff;display:flex;flex-direction:column}
+header{position:sticky;top:0;background:#fff;z-index:2;padding:14px 16px 0}
+.top{display:flex;align-items:center;gap:6px;height:40px}
+.back{width:40px;height:40px;border:0;background:none;font-size:26px;color:#33405e;cursor:pointer;border-radius:10px}
+.back[hidden]{display:block;visibility:hidden}
+.logo{font-weight:800;font-size:17px;color:var(--navy)}.logo b{color:#2fb24a}
+.step{margin-left:auto;font-size:14px;color:var(--sub);font-weight:700}
+.bar{height:5px;background:var(--line);margin-top:10px;border-radius:5px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--blue);transition:width .3s}
+main{flex:1;padding:26px 16px 16px}
+h1{font-size:25px;line-height:1.38;letter-spacing:-.6px;font-weight:800}
+.desc{margin-top:6px;color:var(--sub);font-size:15.5px}
+.opts{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;align-items:center;gap:14px;min-height:64px;padding:14px 16px;border:2px solid var(--line);border-radius:16px;background:#fff;font:inherit;text-align:left;cursor:pointer;color:inherit;transition:border-color .12s,background .12s}
+.opt .dot{width:24px;height:24px;border-radius:50%;border:2px solid #c3ccdc;flex:none;display:grid;place-items:center;color:#fff;font-size:14px;font-weight:900}
+.opt.multi .dot{border-radius:7px}
+.opt .t{font-size:17px;font-weight:700}.opt .s{font-size:14px;color:var(--sub);margin-top:2px}
+.opt .price{margin-left:auto;font-weight:800;font-size:16px;white-space:nowrap}
+.opt.on{border-color:var(--blue);background:#f0f5ff}.opt.on .dot{background:var(--blue);border-color:var(--blue)}
+.opt.on .dot::after{content:"✓"}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+.grid .opt{justify-content:center;font-size:17px;font-weight:700;min-height:62px}
+.grid .opt.wide{grid-column:span 2}
+.field{margin-top:22px}
+.field input{width:100%;height:60px;padding:0 18px;border:2px solid var(--line);border-radius:16px;font:inherit;font-size:20px;font-weight:700;letter-spacing:.5px}
+.field input:focus{outline:none;border-color:var(--blue)}
+.err{color:#e0352b;font-size:14px;margin-top:8px;min-height:20px}
+.note{font-size:13.5px;color:var(--sub);margin-top:6px;line-height:1.55}.note a{color:var(--sub)}
+footer{position:sticky;bottom:0;background:linear-gradient(#fff0,#fff 25%);padding:16px 16px calc(18px + env(safe-area-inset-bottom))}
+footer:empty{display:none}
+.btn{display:block;width:100%;height:58px;border:0;border-radius:16px;font:inherit;font-size:18px;font-weight:800;background:var(--blue);color:#fff;cursor:pointer}
+.btn:disabled{background:#c9d2e6}
+.link{display:block;width:100%;margin-top:6px;height:44px;border:0;background:none;font:inherit;font-size:15.5px;font-weight:600;color:var(--sub);cursor:pointer}
+.done{text-align:center;padding-top:16vh}.done .em{font-size:60px}.done h1{margin-top:14px}
+</style></head><body>
+<div class="app">
+  <header><div class="top"><button class="back" id="back" aria-label="이전" onclick="go(-1)">‹</button><div class="logo"><b>✱</b> POSMOS</div><div class="step" id="step"></div></div>
+  <div class="bar"><i id="bar"></i></div></header>
+  <main id="main"></main>
+  <footer id="foot"></footer>
+</div>
+<script>
+const C={blue:'#1d5cff',green:'#13a84a',purple:'#7b3fe4',orange:'#f26b0f'};
+const NONE='아직 잘 모르겠어요';
+const Q=[
+ {id:'want',q:'사장님, 이 중에<br>관심 가는 혜택이 있나요?',d:'여러 개 골라도 돼요',type:'multi',o:[
+   ['위약금 없는 정수기','부담은 줄이고 깨끗함은 더하고','월 17,900원',C.blue],
+   ['배민 접수 혜택','배민 접수하면 5만원을 드려요','5만원 받기',C.green],
+   ['키오스크','매장 운영의 필수템','월 45,000원',C.purple],
+   ['테이블 오더','더 빠르고 더 편리하게','월 10,000원',C.orange],
+   [NONE]]},
+ {id:'biz',q:'매장은 어떤<br>업종인가요?',d:'누르면 바로 다음으로 넘어가요',type:'single',o:['음식점','카페·베이커리','주점·호프','소매·편의점','기타']},
+ {id:'contact',q:'혜택 안내를<br>받아보시겠어요?',d:'번호만 남기시면 돼요',type:'contact'}
+];
+const A={want:[],biz:null,phone:''};let i=0;
+const $=s=>document.getElementById(s);
+const fmt=v=>{v=v.replace(/\D/g,'').slice(0,11);return v.length<4?v:v.length<8?v.slice(0,3)+'-'+v.slice(3):v.slice(0,3)+'-'+v.slice(3,v.length-4)+'-'+v.slice(-4)};
+const okPhone=v=>/^01[016789]\d{7,8}$/.test(v.replace(/\D/g,''));
+function render(){
+  const m=$('main'),f=$('foot'),done=i>=Q.length;
+  $('bar').style.width=(done?100:(i+1)/Q.length*100)+'%';
+  $('step').textContent=done?'':`${i+1} / ${Q.length}`;
+  $('back').hidden=i===0||done;
+  if(done){
+    m.innerHTML=`<div class="done"><div class="em">🙏</div><h1>참여해 주셔서<br>감사합니다!</h1><p class="desc">${A.phone?'남겨주신 번호로 혜택을 안내해 드릴게요.':'더 좋은 서비스로 보답할게요.'}</p></div>`;
+    f.innerHTML=`<button class="btn" onclick="location.href='https://posmos.net'">포스모스 둘러보기</button>`;return;
+  }
+  const q=Q[i];let h=`<h1>${q.q}</h1><p class="desc">${q.d}</p>`;
+  if(q.type==='multi'){
+    h+=`<div class="opts">${q.o.map((o,k)=>`<button class="opt multi ${A.want.includes(o[0])?'on':''}" onclick="pickMulti(${k})"><span class="dot"></span><span><div class="t">${o[0]}</div>${o[1]?`<div class="s">${o[1]}</div>`:''}</span>${o[2]?`<span class="price" style="color:${o[3]}">${o[2]}</span>`:''}</button>`).join('')}</div>`;
+    f.innerHTML=`<button class="btn" ${A.want.length?'':'disabled'} onclick="go(1)">${A.want.length&&!A.want.includes(NONE)?A.want.length+'개 선택 · ':''}다음</button>`;
+  }else if(q.type==='single'){
+    h+=`<div class="grid">${q.o.map((o,k)=>`<button class="opt ${k===4?'wide':''} ${A.biz===o?'on':''}" onclick="pickOne(${k})">${o}</button>`).join('')}</div>`;
+    f.innerHTML='';
+  }else{
+    h+=`<div class="field"><input id="ph" type="tel" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" value="${A.phone}"><div class="err" id="err"></div>
+    <p class="note">입력하신 번호는 혜택 안내에만 쓰이고, 안내가 끝나면 바로 파기합니다. <a href="https://posmos.net/posmos-privacy.html" target="_blank">자세히</a></p></div>`;
+    f.innerHTML=`<button class="btn" onclick="send()">동의하고 안내받기</button>`;
+  }
+  m.innerHTML=h;
+  const ph=$('ph');if(ph){ph.oninput=()=>{ph.value=fmt(ph.value);$('err').textContent=''};ph.onkeydown=e=>{if(e.key==='Enter')send()};}
+}
+function pickMulti(k){
+  const v=Q[0].o[k][0];let s=A.want;
+  if(v===NONE)s=s.includes(NONE)?[]:[NONE];
+  else{s=s.filter(x=>x!==NONE);s=s.includes(v)?s.filter(x=>x!==v):[...s,v];}
+  A.want=s;render();
+}
+function pickOne(k){A.biz=Q[1].o[k];render();setTimeout(()=>go(1),200);}
+function send(){const v=$('ph').value;if(!okPhone(v)){$('err').textContent='휴대폰 번호를 다시 확인해 주세요';$('ph').focus();return;}A.phone=fmt(v);go(1);}
+function go(d){i=Math.max(0,i+d);render();window.scrollTo(0,0);}
+render();
+</script></body></html>
