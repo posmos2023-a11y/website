@@ -2,6 +2,7 @@
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>포스모스 사장님 설문</title>
-<script>location.replace('/survey/a/'+location.search);</script>
-<meta http-equiv="refresh" content="0;url=/survey/a/">
-</head><body><a href="/survey/a/">설문으로 이동</a></body></html>
+<!-- 설문 포스터 QR 주소. 시안 B 로 넘기면서 유입 코드 qr 을 붙인다(유입 경로 '설문 QR'). 주소에 from 이 있으면 그대로 둔다 -->
+<script>(function(){var p=new URLSearchParams(location.search);if(!p.get('from'))p.set('from','qr');location.replace('/survey/b/?'+p.toString());})();</script>
+<noscript><meta http-equiv="refresh" content="0;url=/survey/b/?from=qr"></noscript>
+</head><body><a href="/survey/b/?from=qr">설문으로 이동</a></body></html>

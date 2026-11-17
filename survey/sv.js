@@ -19,7 +19,7 @@
       var body=JSON.stringify({
         전화번호:phone,
         지역:'',
-        '신청 버튼':('설문'+variant.toUpperCase()+' · '+(biz||'업종 미선택')+' · '+(picks||'혜택 미선택')).slice(0,60),
+        '신청 버튼':('설문'+variant.toUpperCase()+(biz?' · '+biz:'')+' · '+(picks||'혜택 미선택')).slice(0,60),
         '유입 경로':src?src.classify(landing):'알 수 없음',
         '유입 코드':landing&&landing.from?src.fromLabel(landing.from):'없음',
         '첫 방문 페이지':landing?landing.page:location.pathname,
