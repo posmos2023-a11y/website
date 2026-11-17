@@ -3,6 +3,7 @@
 <meta name="robots" content="noindex, nofollow">
 <!-- Google Tag Manager: 운영 도메인에서만 로드 -->
 <script>if(/^(www\.)?posmos\.net$/.test(location.hostname))(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-T6DNFLFK');</script>
+<script src="/track-source.js"></script>
 <script src="/survey/sv.js"></script>
 <title>시안 C · 채팅 대화형</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
@@ -77,7 +78,7 @@ async function run(k){
     <button class="go" id="ok">동의하고 보내기</button>`;
     const ph=document.getElementById('ph'),err=document.getElementById('err');
     ph.oninput=()=>{ph.value=fmt(ph.value);err.textContent=''};
-    const ok=()=>{if(!okPhone(ph.value)){err.textContent='휴대폰 번호를 다시 확인해 주세요';ph.focus();return;}A.phone=ph.value;svSubmit(A.want,A.biz);add(ph.value,1);run(k+1);};
+    const ok=()=>{if(!okPhone(ph.value)){err.textContent='휴대폰 번호를 다시 확인해 주세요';ph.focus();return;}A.phone=ph.value;svSubmit(A.want,A.biz,ph.value);add(ph.value,1);run(k+1);};
     document.getElementById('ok').onclick=ok;ph.onkeydown=e=>{if(e.key==='Enter')ok()};
 return;}
   pad.innerHTML=(s.multi?'<div class="hint">여러 개 골라도 돼요</div>':'')+`<div class="chips">${s.o.map((o,j)=>`<button class="chip ${j===s.o.length-1&&s.o.length%2?'full':''}" data-j="${j}">${o}</button>`).join('')}</div>${s.multi?'<button class="go" id="done" disabled>골라주세요</button>':''}`;

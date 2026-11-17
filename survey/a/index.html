@@ -3,6 +3,7 @@
 <meta name="robots" content="noindex, nofollow">
 <!-- Google Tag Manager: 운영 도메인에서만 로드 -->
 <script>if(/^(www\.)?posmos\.net$/.test(location.hostname))(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-T6DNFLFK');</script>
+<script src="/track-source.js"></script>
 <script src="/survey/sv.js"></script>
 <title>시안 A · 한 화면 한 질문</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
@@ -99,7 +100,7 @@ function pickMulti(k){
   A.want=s;render();
 }
 function pickOne(k){A.biz=Q[1].o[k];render();setTimeout(()=>go(1),200);}
-function send(){const v=$('ph').value;if(!okPhone(v)){$('err').textContent='휴대폰 번호를 다시 확인해 주세요';$('ph').focus();return;}A.phone=fmt(v);svSubmit(A.want,A.biz);go(1);}
+function send(){const v=$('ph').value;if(!okPhone(v)){$('err').textContent='휴대폰 번호를 다시 확인해 주세요';$('ph').focus();return;}A.phone=fmt(v);svSubmit(A.want,A.biz,A.phone);go(1);}
 function go(d){i=Math.max(0,i+d);if(d>0&&i<Q.length)sv('step'+(i+1));render();window.scrollTo(0,0);}
 render();
 </script></body></html>
