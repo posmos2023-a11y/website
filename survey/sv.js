@@ -6,7 +6,7 @@
                   survey_pick_water|baemin|kiosk|tableorder|unsure, survey_biz_restaurant|cafe|bar|retail|etc */
 (function(){
   window.dataLayer=window.dataLayer||[];
-  var variant=(location.pathname.split('/')[2]||'x'), sent={};
+  var variant=(location.pathname.split('/')[2]||'b'), sent={};
   var MAP={'위약금 없는 정수기':'water','배민 접수하면':'baemin','배민 접수 혜택':'baemin','키오스크':'kiosk','테이블 오더':'tableorder','아직 잘 모르겠어요':'unsure',
            '음식점':'restaurant','카페·베이커리':'cafe','주점·호프':'bar','소매·편의점':'retail','기타':'etc'};
   function sv(name){ if(sent[name])return; sent[name]=1; window.dataLayer.push({event:'survey_'+name,survey_variant:variant}); }
