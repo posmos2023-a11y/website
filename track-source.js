@@ -5,7 +5,7 @@
   var KEY='posmos_landing';
   var TTL=30*24*60*60*1000;
   var UTM_KEYS=['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
-  var FROM_LABELS={'ig-dm-price':'인스타DM-요금','ig-dm-product':'인스타DM-제품','ig-dm-consult':'인스타DM-상담','ig-profile':'인스타프로필','ig-ad':'인스타광고','ig-story':'인스타스토리','ig-old':'인스타옛계정','daangn':'당근마켓','tiktok':'틱톡'};
+  var FROM_LABELS={'ig-dm-price':'인스타DM-요금','ig-dm-product':'인스타DM-제품','ig-dm-consult':'인스타DM-상담','ig-profile':'인스타프로필','ig-ad':'인스타광고','ig-story':'인스타스토리','ig-old':'인스타옛계정','daangn':'당근마켓','tiktok':'틱톡','chatgpt':'ChatGPT광고'};
   // 틱톡 앱 안 브라우저의 User-Agent 표시(안드로이드 trill_·iOS musical_ly_·BytedanceWebview). 당근 앱은 karrot·daangn·towneers.
   var APP_UA=[[/musical_ly|trill_|BytedanceWebview|TikTok/i,'tiktok'],[/karrot|daangn|towneers/i,'daangn']];
 
@@ -18,13 +18,14 @@
     return Object.prototype.hasOwnProperty.call(FROM_LABELS,code)?FROM_LABELS[code]:code;
   }
 
-  // 사이트 밖 채널(인스타·당근마켓·틱톡)의 유입 코드면 그 채널 이름을, 아니면 빈 문자열을 돌려준다.
+  // 사이트 밖 채널(인스타·당근마켓·틱톡·ChatGPT)의 유입 코드면 그 채널 이름을, 아니면 빈 문자열을 돌려준다.
   // 이 코드들은 인앱 브라우저처럼 referrer 가 없어도 유입 코드로 인정한다.
   function channelOf(code){
     if(!code)return '';
     if(/^ig-/.test(code))return '인스타그램';
     if(code==='daangn')return '당근마켓';
     if(code==='tiktok'||/^tt-/.test(code))return '틱톡';
+    if(code==='chatgpt'||/^gpt-/.test(code))return 'ChatGPT 광고';
     return '';
   }
 
@@ -33,6 +34,8 @@
     if(!src)return '';
     if(/tiktok|틱톡/i.test(src))return '틱톡';
     if(/daangn|karrot|당근/i.test(src))return '당근마켓';
+    // ChatGPT 답변 속 링크는 utm_source=chatgpt.com 을 붙여 온다
+    if(/chatgpt|openai/i.test(src))return 'ChatGPT';
     return '';
   }
 
@@ -51,6 +54,8 @@
       if(/daangn\.|karrotmarket\.|towneers\./.test(host))return '당근마켓';
       // 틱톡: 웹(tiktok.com)·안드로이드 앱(android-app://com.zhiliaoapp.musically, com.ss.android.ugc.trill)
       if(/tiktok|musical\.ly|zhiliaoapp|ss\.android\.ugc/.test(host))return '틱톡';
+      // ChatGPT: 광고 전용 링크(from=chatgpt)로 왔으면 'ChatGPT 광고', 답변 속 링크면 'ChatGPT'
+      if(/chatgpt\.com|openai\.com/.test(host))return channel||'ChatGPT';
       // 모르는 중간 주소를 거쳐 왔어도 채널 유입 코드가 있으면 그 채널로 본다.
       return channel||host;
     }
