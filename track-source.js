@@ -5,7 +5,7 @@
   var KEY='posmos_landing';
   var TTL=30*24*60*60*1000;
   var UTM_KEYS=['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
-  var FROM_LABELS={'ig-dm-price':'인스타DM-요금','ig-dm-product':'인스타DM-제품','ig-dm-consult':'인스타DM-상담','ig-profile':'인스타프로필','ig-ad':'인스타광고','ig-story':'인스타스토리','ig-old':'인스타옛계정','daangn':'당근마켓','tiktok':'틱톡','chatgpt':'ChatGPT광고','qr':'설문 QR'};
+  var FROM_LABELS={'ig-dm-price':'인스타DM-요금','ig-dm-product':'인스타DM-제품','ig-dm-consult':'인스타DM-상담','ig-profile':'인스타프로필','ig-ad':'인스타광고','ig-story':'인스타스토리','ig-old':'인스타옛계정','daangn':'당근마켓','tiktok':'틱톡','chatgpt':'ChatGPT광고','qr':'리서치조사','research':'리서치조사'};
   // 틱톡 앱 안 브라우저의 User-Agent 표시(안드로이드 trill_·iOS musical_ly_·BytedanceWebview). 당근 앱은 karrot·daangn·towneers.
   var APP_UA=[[/musical_ly|trill_|BytedanceWebview|TikTok/i,'tiktok'],[/karrot|daangn|towneers/i,'daangn']];
 
@@ -26,8 +26,8 @@
     if(code==='daangn')return '당근마켓';
     if(code==='tiktok'||/^tt-/.test(code))return '틱톡';
     if(code==='chatgpt'||/^gpt-/.test(code))return 'ChatGPT 광고';
-    // 설문 포스터 QR(posmos.net/survey/). 전에 다른 경로로 왔던 기록이 있어도 QR 로 덮어쓴다
-    if(code==='qr'||/^qr-/.test(code))return '설문 QR';
+    // 설문 링크(posmos.net/survey/). 전에 다른 경로로 왔던 기록이 있어도 덮어쓴다. qr 은 예전 링크용
+    if(code==='research'||code==='qr'||/^qr-/.test(code))return '리서치조사';
     return '';
   }
 
