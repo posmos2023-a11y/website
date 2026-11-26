@@ -1137,6 +1137,13 @@ html.motion .tl-dot.lit.last{box-shadow:0 0 0 6px rgba(16,185,129,0.14)}
 @media(min-width:901px){.hero-reel{--reel-to:.25}}
 .np-card{background:#fff;box-shadow:var(--sh-raise)}
 .np-card:hover{box-shadow:var(--sh-lift)}
+/* 서비스별 상세 페이지로 가는 '자세히 보기' 링크 */
+.more-link{display:inline-flex;align-items:center;gap:6px;margin:18px 0 0 22px;font-size:15px;font-weight:700;color:var(--blue);text-decoration:none;border-bottom:1.5px solid currentColor;padding-bottom:1px;vertical-align:middle;transition:opacity .2s}
+.more-link:hover{opacity:.75}
+.navy .more-link,.b-price .more-link,.b-free .more-link{color:#fff}
+.b-price .more-link,.b-free .more-link{margin:16px 0 0;align-self:flex-start}
+.more-row{text-align:center;margin-top:40px}
+.more-row .more-link{margin:0}
 </style>
 </head>
 <body>
@@ -1409,6 +1416,7 @@ html.motion .tl-dot.lit.last{box-shadow:0 0 0 6px rgba(16,185,129,0.14)}
         <div class="plan-was"><span class="plan-up" aria-hidden="true">↑</span>정가 <span class="strike">43,000원</span></div>
         <div class="plan-note">* 부가세 별도 · 기존 이용자 전환 가능</div>
         <a href="posmos-apply.html?from=요금제" class="plan-btn shine magnetic press">이 요금제 신청하기</a>
+        <a href="pos.html" class="more-link">무료 포스기 자세히 보기 →</a>
       </div>
       <div class="tile t-items" data-tile>
         <div class="plan-item"><div class="pi-dot" aria-hidden="true">✓</div>인터넷 500M + WiFi + AI전화</div>
@@ -1472,6 +1480,7 @@ html.motion .tl-dot.lit.last{box-shadow:0 0 0 6px rgba(16,185,129,0.14)}
         </div>
       </div>
     </div>
+    <p class="more-row"><a href="delivery.html" class="more-link">배달 3사 연동 자세히 보기 →</a></p>
   </div>
 </section>
 
@@ -1516,6 +1525,7 @@ html.motion .tl-dot.lit.last{box-shadow:0 0 0 6px rgba(16,185,129,0.14)}
           <span class="price-suffix">올인원 패키지 포함</span>
         </div>
         <a href="posmos-apply.html?from=서비스탭-토스프론트" class="plan-btn shine magnetic press">무료로 받기</a>
+        <a href="tossfront.html" class="more-link">토스프론트 자세히 보기 →</a>
         <div class="film">
           <img src="img/v3/film-1.webp" width="560" height="400" alt="계산대에서 고객이 토스 프론트로 결제 방법 선택하는 모습" loading="lazy">
           <img src="img/v3/film-2.webp" width="560" height="400" alt="토스 프론트 결제 화면에서 고객이 직접 선택하는 모습" loading="lazy">
@@ -1562,6 +1572,7 @@ html.motion .tl-dot.lit.last{box-shadow:0 0 0 6px rgba(16,185,129,0.14)}
             <span class="price-suffix">/ 월~</span>
           </div>
           <a href="posmos-apply.html?from=서비스탭-키오스크" class="plan-btn shine magnetic press">상담 신청하기</a>
+          <a href="kiosk.html" class="more-link">키오스크 자세히 보기 →</a>
         </div>
       </div>
     </div>
@@ -1603,6 +1614,7 @@ html.motion .tl-dot.lit.last{box-shadow:0 0 0 6px rgba(16,185,129,0.14)}
           <span class="price-suffix">/ 월~</span>
         </div>
         <a href="posmos-apply.html?from=서비스탭-테이블오더" class="plan-btn shine magnetic press">상담 신청하기</a>
+        <a href="tableorder.html" class="more-link">테이블오더 자세히 보기 →</a>
       </div>
     </div>
   </div>
@@ -1645,6 +1657,7 @@ html.motion .tl-dot.lit.last{box-shadow:0 0 0 6px rgba(16,185,129,0.14)}
           <span class="price-num">무료</span>
         </div>
         <a href="posmos-apply.html?from=서비스탭-QR주문" class="plan-btn on-green shine magnetic press">무료로 받기</a>
+        <a href="qrorder.html" class="more-link">QR오더 자세히 보기 →</a>
       </div>
       <div class="tile b-stickers" id="stickers" aria-hidden="true">
         <img class="sticker" style="--i:0;--d:4.5" src="img/qrsticker-blue.webp" alt="" loading="lazy">
@@ -1754,6 +1767,7 @@ html.motion .tl-dot.lit.last{box-shadow:0 0 0 6px rgba(16,185,129,0.14)}
         <li>엑셀 다운로드, 감사 로그 등 운영 방식에 맞는 기능 추가 개발</li>
       </ul>
       <a href="posmos-apply.html?from=서비스탭-수발주" class="plan-btn shine magnetic press">수발주 프로그램 개발 문의하기</a>
+      <a href="supply.html" class="more-link">수발주 개발 자세히 보기 →</a>
     </div>
   </div>
 </section>
@@ -1852,9 +1866,13 @@ html.motion .tl-dot.lit.last{box-shadow:0 0 0 6px rgba(16,185,129,0.14)}
         <div class="footer-col">
           <h5>서비스</h5>
           <ul>
-            <li><a href="#services">무료 포스기</a></li>
-            <li><a href="#services">배달 통합</a></li>
-            <li><a href="#services">키오스크</a></li>
+            <li><a href="pos.html">무료 포스기</a></li>
+            <li><a href="delivery.html">배달 3사 연동</a></li>
+            <li><a href="tossfront.html">토스프론트 카드단말기</a></li>
+            <li><a href="kiosk.html">키오스크</a></li>
+            <li><a href="tableorder.html">테이블오더</a></li>
+            <li><a href="qrorder.html">QR오더</a></li>
+            <li><a href="supply.html">수발주 프로그램</a></li>
           </ul>
         </div>
         <div class="footer-col">
